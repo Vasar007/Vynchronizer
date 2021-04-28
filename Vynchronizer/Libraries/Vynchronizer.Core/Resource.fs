@@ -17,7 +17,7 @@ type ResourceMetadata = {
     Path: string
     Name: string
     Extension: string
-    Size: bigint
+    SizeInBytes: bigint
     Type: ResourceType
     Created: DateTime
     Modified: DateTime
