@@ -1,4 +1,4 @@
-﻿module Vynchronizer.Core.AsyncFileReader
+﻿module Vynchronizer.Core.Local.AsyncFileReader
 
 
 open System.IO
@@ -9,8 +9,8 @@ open System.IO
 /// </summary>
 type AsyncSeq<'T> = Async<AsyncSeqInner<'T>>
 and AsyncSeqInner<'T> =
-  | Ended
-  | Item of 'T * AsyncSeq<'T>
+    | Ended
+    | Item of 'T * AsyncSeq<'T>
 
 /// <summary>
 /// Reads stream in blocks of size (returns on-demand asynchronous sequence).

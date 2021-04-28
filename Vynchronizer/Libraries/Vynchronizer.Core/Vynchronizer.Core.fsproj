@@ -14,7 +14,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="AsyncFileReader.fs" />
+    <Compile Include="Local\AsyncFileReader.fs" />
+    <Compile Include="Resource.fs" />
+    <Compile Include="Source.fs" />
+    <Compile Include="Target.fs" />
+    <Compile Include="Operator.fs" />
   </ItemGroup>
 
   <ItemGroup>
