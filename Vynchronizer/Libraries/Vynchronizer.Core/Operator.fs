@@ -7,7 +7,7 @@ open Vynchronizer.Core.Source
 open Vynchronizer.Core.Target
 
 // TODO: add rule to specify when we should copy data.
-let copyData<'TData> (source: ISource<'TData>) (target: ITarget<'TData>) =
+let copyData source sourceSpec target targetSpec =
     // TODO: compare metadata at first.
-    let dataSource = source.GetData()
-    target.WriteData(dataSource)
+    source sourceSpec
+        |> (target targetSpec)

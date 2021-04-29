@@ -24,7 +24,3 @@ type ResourceMetadata = {
     Accessed: DateTime
     Attributes: seq<string>
 }
-
-// TODO: refactor to functional style.
-type IResource =
-    abstract member GetMetadata: returnLatest: bool -> ResourceMetadata

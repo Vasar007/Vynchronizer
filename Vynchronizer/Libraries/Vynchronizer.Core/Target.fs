@@ -3,37 +3,33 @@
 
 open System
 open Vynchronizer.Core.Resource
-open Vynchronizer.Core.Source
+
+type TargetSpec = {
+    DummyTarget: unit
+}
 
 type OperationResult = {
     Success: bool
     Message: string
 }
 
-// TODO: refactor to functional style.
-type ITarget<'TData> =
-    inherit IResource
-    abstract member WriteData: dataSource: DataSource<'TData> -> Result<OperationResult, Exception>
+let getTargetMetadata returnLatest =
+    let result = {
+        Path = "Path"
+        Name = "Name"
+        Extension = "Extension"
+        SizeInBytes = new bigint(42)
+        Type = ResourceType.Unknown
+        Created = DateTime.Now
+        Modified =  DateTime.Now
+        Accessed = DateTime.Now
+        Attributes = Seq.empty
+    }
+    result
 
-type DummyTarget<'TData>() =
-    interface ITarget<'TData> with
-        member _.GetMetadata returnLatest =
-            let result = {
-                Path = "Path"
-                Name = "Name"
-                Extension = "Extension"
-                SizeInBytes = new bigint(42)
-                Type = ResourceType.Unknown
-                Created = DateTime.Now
-                Modified =  DateTime.Now
-                Accessed = DateTime.Now
-                Attributes = Seq.empty
-            }
-            result
-
-        member _.WriteData dataSource =
-            let operationResult = {
-                Success = true
-                Message = "This is success!"
-            }
-            Ok operationResult
+let writeDataToTarget targetSpec dataSource =
+    let operationResult = {
+        Success = true
+        Message = "This is success!"
+    }
+    Ok operationResult

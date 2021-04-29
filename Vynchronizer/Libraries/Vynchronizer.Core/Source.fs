@@ -4,33 +4,30 @@
 open System
 open Vynchronizer.Core.Resource
 
+type SourceSpec = {
+    DummySource: unit
+}
+
 type DataSource<'TData> = {
     Enumerator: seq<'TData>
 }
 
-// TODO: refactor to functional style.
-type ISource<'TData> =
-    inherit IResource
-    abstract member GetData: unit -> DataSource<'TData>
+let getSourceMetadata returnLatest =
+    let result = {
+        Path = "Path"
+        Name = "Name"
+        Extension = "Extension"
+        SizeInBytes = new bigint(42)
+        Type = ResourceType.Unknown
+        Created = DateTime.Now
+        Modified =  DateTime.Now
+        Accessed = DateTime.Now
+        Attributes = Seq.empty
+    }
+    result
 
-type DummySource<'TData>() =
-    interface ISource<'TData> with
-        member _.GetMetadata returnLatest =
-            let result = {
-                Path = "Path"
-                Name = "Name"
-                Extension = "Extension"
-                SizeInBytes = new bigint(42)
-                Type = ResourceType.Unknown
-                Created = DateTime.Now
-                Modified =  DateTime.Now
-                Accessed = DateTime.Now
-                Attributes = Seq.empty
-            }
-            result
-
-        member _.GetData() =
-            let dataSource = {
-                Enumerator = Seq.empty
-            }
-            dataSource
+let getDataFromSource sourceSpec =
+    let dataSource = {
+        Enumerator = Seq.empty
+    }
+    dataSource

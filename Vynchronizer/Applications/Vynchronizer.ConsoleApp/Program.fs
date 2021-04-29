@@ -22,11 +22,19 @@ let sampleOfComparing =
     }
 
 let sampleOfOperator =
-    let source = new DummySource<byte>()
-    let target = new DummyTarget<byte>()
+    let sourceSpec = {
+        DummySource = ()
+    }
+    let source = getDataFromSource
+
+    let targetSpec = {
+        DummyTarget = ()
+    }
+    let target = writeDataToTarget
+
     printfn "Executing operation for source and target."
 
-    let operationResult = copyData source target
+    let operationResult = copyData source sourceSpec target targetSpec
     match operationResult with
         | Ok result -> printfn $"Operation result: {result.Success.ToString()}, message: {result.Message}"
         | Error error -> printfn $"Error: {error}"
