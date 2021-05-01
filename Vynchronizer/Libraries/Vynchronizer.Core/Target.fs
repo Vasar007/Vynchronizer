@@ -4,16 +4,16 @@
 open System
 open Vynchronizer.Core.Resource
 
-type TargetSpec = {
+type public TargetSpec = {
     StorageType: ResourceStorage
 }
 
-type OperationResult = {
+type public OperationResult = {
     Success: bool
     Message: string
 }
 
-let getDummyTargetMetadata returnLatest =
+let public getDummyTargetMetadata returnLatest =
     let result = {
         Path = "Path"
         Name = "Name"
@@ -27,7 +27,7 @@ let getDummyTargetMetadata returnLatest =
     }
     result
 
-let writeDummyDataToTarget targetSpec dataSource =
+let public writeDummyDataToTarget targetSpec dataSource =
     let operationResult = {
         Success = true
         Message = "This is success!"

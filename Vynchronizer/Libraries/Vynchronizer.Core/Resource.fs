@@ -4,7 +4,7 @@
 open System
 
 [<Struct>]
-type ResourceType =
+type public ResourceType =
     | Unknown
     | Library
     | Executable
@@ -14,12 +14,12 @@ type ResourceType =
     | Document
 
 [<Struct>]
-type ResourceStorage =
+type public ResourceStorage =
     | Unknown
     | LocalFileSystem
     | GoogleDrive
 
-type ResourceMetadata = {
+type public ResourceMetadata = {
     Path: string
     Name: string
     Extension: string

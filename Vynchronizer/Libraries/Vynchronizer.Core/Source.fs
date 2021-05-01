@@ -4,15 +4,15 @@
 open System
 open Vynchronizer.Core.Resource
 
-type SourceSpec = {
+type public SourceSpec = {
     StorageType: ResourceStorage
 }
 
-type DataSource<'TData> = {
+type public DataSource<'TData> = {
     Enumerator: seq<'TData>
 }
 
-let getDummySourceMetadata returnLatest =
+let public getDummySourceMetadata returnLatest =
     let result = {
         Path = "Path"
         Name = "Name"
@@ -26,7 +26,7 @@ let getDummySourceMetadata returnLatest =
     }
     result
 
-let getDummyDataFromSource sourceSpec =
+let public getDummyDataFromSource sourceSpec =
     let dataSource = {
         Enumerator = Seq.empty
     }

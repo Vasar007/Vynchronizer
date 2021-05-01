@@ -1,7 +1,6 @@
 ﻿module Vynchronizer.Core.Operator
 
 
-open System
 open Vynchronizer.Core.Resource
 open Vynchronizer.Core.Source
 open Vynchronizer.Core.Target
@@ -19,7 +18,7 @@ let private getTargetWriter (targetSpec: TargetSpec) =
         | ResourceStorage.GoogleDrive -> writeDummyDataToTarget
 
 // TODO: add rule to specify when we should copy data.
-let processSpecs sourceSpec targetSpec =
+let public processSpecs sourceSpec targetSpec =
     let source = getSourceData sourceSpec
     let target = getTargetWriter targetSpec
 
