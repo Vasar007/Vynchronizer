@@ -16,25 +16,23 @@ let sampleOfComparing =
         printfn $"Comparing two files {file1} and {file2} with size blocks {size.ToString()}"
 
         let! comareResult = compareFiles file1 file2 size
-        printfn "Comparison result: %b" comareResult
+        printfn $"Comparison result: {comareResult.ToString()}"
 
         return 0
     }
 
 let sampleOfOperator =
-    let sourceSpec = {
-        DummySource = ()
+    let (sourceSpec: SourceSpec) = {
+        StorageType = ResourceStorage.LocalFileSystem
     }
-    let source = getDataFromSource
 
-    let targetSpec = {
-        DummyTarget = ()
+    let (targetSpec: TargetSpec) = {
+        StorageType = ResourceStorage.LocalFileSystem
     }
-    let target = writeDataToTarget
 
     printfn "Executing operation for source and target."
 
-    let operationResult = copyData source sourceSpec target targetSpec
+    let operationResult = processSpecs sourceSpec targetSpec
     match operationResult with
         | Ok result -> printfn $"Operation result: {result.Success.ToString()}, message: {result.Message}"
         | Error error -> printfn $"Error: {error}"

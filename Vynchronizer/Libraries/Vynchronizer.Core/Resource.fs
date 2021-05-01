@@ -13,6 +13,12 @@ type ResourceType =
     | Music
     | Document
 
+[<Struct>]
+type ResourceStorage =
+    | Unknown
+    | LocalFileSystem
+    | GoogleDrive
+
 type ResourceMetadata = {
     Path: string
     Name: string
