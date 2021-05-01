@@ -3,13 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Vynchronizer.Core", "Libraries\Vynchronizer.Core\Vynchronizer.Core.fsproj", "{4A28EEEA-2BE5-42DE-9203-992090B905CC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F3D6B084-1BA3-44EA-B3D3-C236F5A1A82A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
+		NuGet.Config = NuGet.Config
 	EndProjectSection
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Vynchronizer.Core", "Libraries\Vynchronizer.Core\Vynchronizer.Core.fsproj", "{4A28EEEA-2BE5-42DE-9203-992090B905CC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{3C0A1BCD-9608-42C6-B4D8-89EBF6CD75AF}"
 EndProject
