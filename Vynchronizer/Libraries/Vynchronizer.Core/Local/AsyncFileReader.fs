@@ -8,7 +8,7 @@ open System.IO
 /// Represents a sequence of values 'TData where items are generated asynchronously on-demand.
 /// </summary>
 type private AsyncReadSeq<'TData> = Async<AsyncReadSeqInner<'TData>>
-and AsyncReadSeqInner<'TData> =
+and private AsyncReadSeqInner<'TData> =
     | ReadingEnded
     | ReadItem of 'TData * AsyncReadSeq<'TData>
 
@@ -17,7 +17,7 @@ and AsyncReadSeqInner<'TData> =
 /// are written asynchronously on-demand.
 /// </summary>
 type private AsyncWriteSeq<'TData, 'TResult> = Async<AsyncWriteSeqInner<'TData, 'TResult>>
-and AsyncWriteSeqInner<'TData, 'TResult> =
+and private AsyncWriteSeqInner<'TData, 'TResult> =
     | WritingEnded
     | WrittenItem of 'TResult * ('TData -> AsyncWriteSeq<'TData, 'TResult>)
 
@@ -63,8 +63,8 @@ let private readInBlocks (stream: Stream) size =
     }
 
 /// <summary>
-/// Returns function that writes stream from buffer with blocks of size (returns on-demand
-/// asynchronous sequence).
+/// Returns function that writes stream from buffer blocks (returns on-demand asynchronous
+/// sequence).
 /// </summary>
 let private writeInBlocks (stream: Stream) =
     ensureStreamCanWrite stream
@@ -111,9 +111,7 @@ let rec private copyBlocks readSeq1 writeSeq2 resultSeq =
                         let uptatedResult = resultSeq |> Seq.append (Seq.singleton result2)
                         return! copyBlocks nestedSeq1 nestedSeq2 uptatedResult
                     | WritingEnded -> return resultSeq
-            | ReadingEnded ->
-                
-                return resultSeq
+            | ReadingEnded -> return resultSeq
     }
 
 /// <summary>
@@ -134,7 +132,7 @@ let public compareFiles filePath1 filePath2 size =
 let public copyData filePath1 filePath2 size =
     async {
         use stream1 = File.OpenRead(filePath1)
-        use stream2 = File.Open(filePath2, FileMode.Truncate)
+        use stream2 = File.Open(filePath2, FileMode.Truncate) // Reset content of target file.
         let readSeq1 = readInBlocks stream1 size
         let writeSeq2 = writeInBlocks stream2
         return! copyBlocks readSeq1 writeSeq2 Seq.empty
