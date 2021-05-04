@@ -26,14 +26,14 @@ and private AsyncWriteSeqInner<'TData, 'TResult> =
 /// </summary>
 let private ensureStreamCanRead (stream: Stream) =
     if not stream.CanRead then
-        raise (new NotSupportedException("The stream does not support reading."))
+        raise (NotSupportedException("The stream does not support reading."))
 
 /// <summary>
 /// Ensures that steam writable.
 /// </summary>
 let private ensureStreamCanWrite (stream: Stream) =
     if not stream.CanWrite then
-        raise (new NotSupportedException("The stream does not support writing."))
+        raise (NotSupportedException("The stream does not support writing."))
 
 /// <summary>
 /// Reads stream in blocks of size (returns on-demand asynchronous sequence).

@@ -1,11 +1,12 @@
 ﻿module Vynchronizer.Core.Target
 
 
-open System
+open Vynchronizer.Core.Source
 open Vynchronizer.Core.Resource
 
 type public TargetSpec = {
     StorageType: ResourceStorage
+    Path: ResourcePath
 }
 
 type public OperationResult = {
@@ -13,23 +14,19 @@ type public OperationResult = {
     Message: string
 }
 
-let public getDummyTargetMetadata returnLatest =
-    let result = {
-        Path = "Path"
-        Name = "Name"
-        Extension = "Extension"
-        SizeInBytes = new bigint(42)
-        Type = ResourceType.Unknown
-        Created = DateTime.Now
-        Modified =  DateTime.Now
-        Accessed = DateTime.Now
-        Attributes = Seq.empty
-    }
-    result
+let public tryGetTagetMetadataFromLocalFile (targetSpec: TargetSpec) =
+     tryGetMetadataFromLocalFile targetSpec.Path
 
-let public writeDummyDataToTarget targetSpec dataSource =
+let public writeDataToTargetLocalFile (targetMetadata: ResourceMetadata) (targetSpec: TargetSpec) (dataSource: DataSource<'TData>) =
+    printfn $"{targetMetadata}" // TODO: replace with logger.
     let operationResult = {
         Success = true
         Message = "This is success!"
     }
     Ok operationResult
+
+let public writeDataToLocalFile (targetSpec: TargetSpec) (dataSource: DataSource<'TData>) =
+    let tagetMetadataOrError = tryGetTagetMetadataFromLocalFile targetSpec
+    match tagetMetadataOrError with
+        | Ok tagetMetadata -> writeDataToTargetLocalFile tagetMetadata targetSpec dataSource
+        | Error error -> Error error

@@ -38,10 +38,12 @@ let private sampleOfCopying =
 let private sampleOfOperator =
     let (sourceSpec: SourceSpec) = {
         StorageType = ResourceStorage.LocalFileSystem
+        Path = { Value = "1.txt" }
     }
 
     let (targetSpec: TargetSpec) = {
         StorageType = ResourceStorage.LocalFileSystem
+        Path = { Value = "2.txt" }
     }
 
     printfn "Executing operation for source and target."
@@ -55,7 +57,7 @@ let private sampleOfOperator =
 
 let private asyncMain (args: string[]) =
     async {
-        let option = 1
+        let option = 2
 
         match option with
             | 0 -> return! sampleOfComparing

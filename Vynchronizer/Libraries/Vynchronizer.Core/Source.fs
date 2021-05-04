@@ -1,33 +1,33 @@
 ﻿module Vynchronizer.Core.Source
 
 
-open System
 open Vynchronizer.Core.Resource
 
 type public SourceSpec = {
     StorageType: ResourceStorage
+    Path: ResourcePath
 }
+
+type public DataEnumerable<'TData> =
+    | SincEnumerable of seq<'TData>
+    | AsyncEnumerable of Async<seq<'TData>>
 
 type public DataSource<'TData> = {
-    Enumerator: seq<'TData>
+    SourceData: DataEnumerable<'TData>
 }
 
-let public getDummySourceMetadata returnLatest =
-    let result = {
-        Path = "Path"
-        Name = "Name"
-        Extension = "Extension"
-        SizeInBytes = new bigint(42)
-        Type = ResourceType.Unknown
-        Created = DateTime.Now
-        Modified =  DateTime.Now
-        Accessed = DateTime.Now
-        Attributes = Seq.empty
-    }
-    result
+let public tryGetSourceMetadataFromLocalFile (sourceSpec: SourceSpec) =
+    tryGetMetadataFromLocalFile sourceSpec.Path
 
-let public getDummyDataFromSource sourceSpec =
+let public getDataSourceFromLocalFile (sourceMetadata: ResourceMetadata) (sourceSpec: SourceSpec) =
+    printfn $"{sourceMetadata}" // TODO: replace with logger.
     let dataSource = {
-        Enumerator = Seq.empty
+        SourceData = SincEnumerable Seq.empty
     }
-    dataSource
+    Ok dataSource
+
+let public processDataFromLocalFile (sourceSpec: SourceSpec) =
+    let sourceMetadataOrError = tryGetSourceMetadataFromLocalFile sourceSpec
+    match sourceMetadataOrError with
+        | Ok sourceMetadata -> getDataSourceFromLocalFile sourceMetadata sourceSpec
+        | Error error -> Error error
