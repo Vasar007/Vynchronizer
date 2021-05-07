@@ -24,5 +24,9 @@ let public processSpecs sourceSpec targetSpec =
     let target = getTargetWriter targetSpec
 
     // TODO: compare metadata at first.
-    source sourceSpec
-        |> Result.bind (target targetSpec)
+    async {
+        let dataSourceOrError = source sourceSpec
+        match dataSourceOrError with
+            | Ok dataSource -> return! target targetSpec dataSource
+            | Error error -> return Error error
+    }

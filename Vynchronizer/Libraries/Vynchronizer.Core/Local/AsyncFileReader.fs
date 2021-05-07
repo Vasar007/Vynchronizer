@@ -7,8 +7,8 @@ open System.IO
 /// <summary>
 /// Represents a sequence of values 'TData where items are generated asynchronously on-demand.
 /// </summary>
-type private AsyncReadSeq<'TData> = Async<AsyncReadSeqInner<'TData>>
-and private AsyncReadSeqInner<'TData> =
+type public AsyncReadSeq<'TData> = Async<AsyncReadSeqInner<'TData>>
+and public AsyncReadSeqInner<'TData> =
     | ReadingEnded
     | ReadItem of 'TData * AsyncReadSeq<'TData>
 
@@ -16,8 +16,8 @@ and private AsyncReadSeqInner<'TData> =
 /// Represents a sequence of result values 'TResult and function which accept items of type 'TData
 /// are written asynchronously on-demand.
 /// </summary>
-type private AsyncWriteSeq<'TData, 'TResult> = Async<AsyncWriteSeqInner<'TData, 'TResult>>
-and private AsyncWriteSeqInner<'TData, 'TResult> =
+type public AsyncWriteSeq<'TData, 'TResult> = Async<AsyncWriteSeqInner<'TData, 'TResult>>
+and public AsyncWriteSeqInner<'TData, 'TResult> =
     | WritingEnded
     | WrittenItem of 'TResult * ('TData -> AsyncWriteSeq<'TData, 'TResult>)
 
@@ -38,7 +38,7 @@ let private ensureStreamCanWrite (stream: Stream) =
 /// <summary>
 /// Reads stream in blocks of size (returns on-demand asynchronous sequence).
 /// </summary>
-let private readInBlocks (stream: Stream) size =
+let public readInBlocks (stream: Stream) size =
     ensureStreamCanRead stream
 
     async {
@@ -66,7 +66,7 @@ let private readInBlocks (stream: Stream) size =
 /// Returns function that writes stream from buffer blocks (returns on-demand asynchronous
 /// sequence).
 /// </summary>
-let private writeInBlocks (stream: Stream) =
+let public writeInBlocks (stream: Stream) =
     ensureStreamCanWrite stream
 
     // Writes next block and returns "Item" of async seq.
@@ -86,7 +86,7 @@ let private writeInBlocks (stream: Stream) =
 /// <summary>
 /// Compares two asynchronous sequences. Use this function along with <see cref="readInBlocks" />.
 /// </summary>
-let rec private compareBlocks readSeq1 readSeq2 =
+let rec internal compareBlocks readSeq1 readSeq2 =
     async {
         let! item1 = readSeq1
         let! item2 = readSeq2
@@ -101,7 +101,7 @@ let rec private compareBlocks readSeq1 readSeq2 =
 /// Copies data between two asynchronous sequences. Use this function along with
 /// <see cref="readInBlocks" /> and <see cref="writeInBlocks" />.
 /// </summary>
-let rec private copyBlocks readSeq1 writeSeq2 resultSeq =
+let rec internal copyBlocks readSeq1 writeSeq2 resultSeq =
     async { 
         match! readSeq1 with
             | ReadItem(block1, nestedSeq1) ->

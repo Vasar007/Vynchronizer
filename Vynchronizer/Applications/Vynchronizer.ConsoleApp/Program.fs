@@ -39,6 +39,7 @@ let private sampleOfOperator =
     let (sourceSpec: SourceSpec) = {
         StorageType = ResourceStorage.LocalFileSystem
         Path = { Value = "1.txt" }
+        BlockSize = 1000
     }
 
     let (targetSpec: TargetSpec) = {
@@ -48,12 +49,15 @@ let private sampleOfOperator =
 
     printfn "Executing operation for source and target."
 
-    let operationResult = processSpecs sourceSpec targetSpec
-    match operationResult with
-        | Ok result -> printfn $"Operation result: {result.Success.ToString()}, message: {result.Message}"
-        | Error error -> printfn $"Error: {error}"
+    async {
+        let! operationResult = processSpecs sourceSpec targetSpec
+        match operationResult with
+            | Ok result -> printfn $"Operation result: {result.Success.ToString()}, message: {result.Message}"
+            | Error error -> printfn $"Error: {error}"
 
-    0
+        return 0
+    }
+
 
 let private asyncMain (args: string[]) =
     async {
@@ -62,7 +66,7 @@ let private asyncMain (args: string[]) =
         match option with
             | 0 -> return! sampleOfComparing
             | 1 -> return! sampleOfCopying
-            | 2 -> return sampleOfOperator
+            | 2 -> return! sampleOfOperator
             | _ -> return 0
     }
 

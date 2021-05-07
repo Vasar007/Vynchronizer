@@ -1,19 +1,22 @@
 ﻿module Vynchronizer.Core.Source
 
 
+open System.IO
 open Vynchronizer.Core.Resource
+open Vynchronizer.Core.Local.AsyncFileReader
 
 type public SourceSpec = {
     StorageType: ResourceStorage
     Path: ResourcePath
+    BlockSize: int
 }
 
-type public DataEnumerable<'TData> =
-    | SincEnumerable of seq<'TData>
-    | AsyncEnumerable of Async<seq<'TData>>
+type public DataEnumerable = Async<AsyncReadSeqInner<byte[]>>
 
 type public DataSource<'TData> = {
-    SourceData: DataEnumerable<'TData>
+    Spec: SourceSpec
+    Metadata: ResourceMetadata
+    Data: ResourceMetadata -> 'TData
 }
 
 let public tryGetSourceMetadataFromLocalFile (sourceSpec: SourceSpec) =
@@ -21,8 +24,12 @@ let public tryGetSourceMetadataFromLocalFile (sourceSpec: SourceSpec) =
 
 let public getDataSourceFromLocalFile (sourceMetadata: ResourceMetadata) (sourceSpec: SourceSpec) =
     printfn $"{sourceMetadata}" // TODO: replace with logger.
+
+    let sourceData = fun (metadata: ResourceMetadata) -> File.OpenRead(metadata.Path.Value)
     let dataSource = {
-        SourceData = SincEnumerable Seq.empty
+        Spec = sourceSpec
+        Metadata = sourceMetadata
+        Data = sourceData
     }
     Ok dataSource
 
