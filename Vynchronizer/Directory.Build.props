@@ -1,5 +1,6 @@
 <Project>
   <PropertyGroup>
+    <AcolyteNETPackageVersion>2.1.0</AcolyteNETPackageVersion>
     <CoverletCollectorPackageVersion>3.0.3</CoverletCollectorPackageVersion>
     <IndexRangePackageVersion>1.0.0</IndexRangePackageVersion>
     <IsExternalInitPackageVersion>1.0.0</IsExternalInitPackageVersion>

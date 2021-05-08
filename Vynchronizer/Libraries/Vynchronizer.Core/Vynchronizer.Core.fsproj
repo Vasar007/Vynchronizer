@@ -14,18 +14,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Option.fs" />
+    <Compile Include="Result.fs" />
     <Compile Include="Local\AsyncFileReader.fs" />
     <Compile Include="Resource.fs" />
+    <Compile Include="Metadata.fs" />
     <Compile Include="Source.fs" />
     <Compile Include="Target.fs" />
     <Compile Include="Operator.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Acolyte.NET" Version="2.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Acolyte.NET" Version="$(AcolyteNETPackageVersion)" />
     <PackageReference Update="FSharp.Core" Version="$(FSharpCorePackageVersion)" />
   </ItemGroup>
 
