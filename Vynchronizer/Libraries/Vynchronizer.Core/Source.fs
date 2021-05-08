@@ -2,7 +2,9 @@
 
 
 open System.IO
+open Vynchronizer.Core.Metadata
 open Vynchronizer.Core.Resource
+open Vynchronizer.Core.Utils
 open Vynchronizer.Core.Local.AsyncFileReader
 
 type public SourceSpec = {
@@ -21,10 +23,10 @@ type public DataSource<'TData> = {
 
 let public tryGetSourceMetadataFromLocalFile (sourceSpec: SourceSpec) =
     tryGetMetadataFromLocalFile sourceSpec.Path
+        |> Result.map logObject
+        |> Result.mapError (wrapErrorToOperationResult FailedToGetSourceMetadata)
 
 let public getDataSourceFromLocalFile (sourceMetadata: ResourceMetadata) (sourceSpec: SourceSpec) =
-    printfn $"{sourceMetadata}" // TODO: replace with logger.
-
     let sourceData = fun (metadata: ResourceMetadata) -> File.OpenRead(metadata.Path.Value)
     let dataSource = {
         Spec = sourceSpec

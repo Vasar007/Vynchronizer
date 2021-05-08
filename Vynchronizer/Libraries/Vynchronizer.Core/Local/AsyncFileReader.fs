@@ -38,7 +38,7 @@ let private ensureStreamCanWrite (stream: Stream) =
 /// <summary>
 /// Reads stream in blocks of size (returns on-demand asynchronous sequence).
 /// </summary>
-let public readInBlocks (stream: Stream) size =
+let public readInBlocksAsync (stream: Stream) size =
     ensureStreamCanRead stream
 
     async {
@@ -66,7 +66,7 @@ let public readInBlocks (stream: Stream) size =
 /// Returns function that writes stream from buffer blocks (returns on-demand asynchronous
 /// sequence).
 /// </summary>
-let public writeInBlocks (stream: Stream) =
+let public writeInBlocksAsync (stream: Stream) =
     ensureStreamCanWrite stream
 
     // Writes next block and returns "Item" of async seq.
@@ -86,13 +86,13 @@ let public writeInBlocks (stream: Stream) =
 /// <summary>
 /// Compares two asynchronous sequences. Use this function along with <see cref="readInBlocks" />.
 /// </summary>
-let rec internal compareBlocks readSeq1 readSeq2 =
+let rec internal compareBlocksAsync readSeq1 readSeq2 =
     async {
         let! item1 = readSeq1
         let! item2 = readSeq2
         match item1, item2 with
             | ReadItem(block1, _), ReadItem(block2, _) when block1 <> block2 -> return false
-            | ReadItem(_, nestedSeq1), ReadItem(_, nestedSeq2) -> return! compareBlocks nestedSeq1 nestedSeq2
+            | ReadItem(_, nestedSeq1), ReadItem(_, nestedSeq2) -> return! compareBlocksAsync nestedSeq1 nestedSeq2
             | ReadingEnded, ReadingEnded -> return true
             | _ -> return failwith "Size does not match."
     }
@@ -101,7 +101,7 @@ let rec internal compareBlocks readSeq1 readSeq2 =
 /// Copies data between two asynchronous sequences. Use this function along with
 /// <see cref="readInBlocks" /> and <see cref="writeInBlocks" />.
 /// </summary>
-let rec internal copyBlocks readSeq1 writeSeq2 resultSeq =
+let rec internal copyBlocksAsync readSeq1 writeSeq2 resultSeq =
     async { 
         match! readSeq1 with
             | ReadItem(block1, nestedSeq1) ->
@@ -109,7 +109,7 @@ let rec internal copyBlocks readSeq1 writeSeq2 resultSeq =
                 match resultSeq2 with
                     | WrittenItem(result2, nestedSeq2) ->
                         let uptatedResult = resultSeq |> Seq.append (Seq.singleton result2)
-                        return! copyBlocks nestedSeq1 nestedSeq2 uptatedResult
+                        return! copyBlocksAsync nestedSeq1 nestedSeq2 uptatedResult
                     | WritingEnded -> return resultSeq
             | ReadingEnded -> return resultSeq
     }
@@ -117,23 +117,23 @@ let rec internal copyBlocks readSeq1 writeSeq2 resultSeq =
 /// <summary>
 /// Compares two files using specified size of blocks.
 /// </summary>
-let public compareFiles filePath1 filePath2 size =
+let public compareFilesAsync filePath1 filePath2 size =
     async {
         use stream1 = File.OpenRead(filePath1)
         use stream2 = File.OpenRead(filePath2)
-        let readSeq1 = readInBlocks stream1 size
-        let readSeq2 = readInBlocks stream2 size
-        return! compareBlocks readSeq1 readSeq2
+        let readSeq1 = readInBlocksAsync stream1 size
+        let readSeq2 = readInBlocksAsync stream2 size
+        return! compareBlocksAsync readSeq1 readSeq2
     }
 
 /// <summary>
 /// Copies data from source to target using specified size of blocks.
 /// </summary>
-let public copyData filePath1 filePath2 size =
+let public copyDataAsync filePath1 filePath2 size =
     async {
         use stream1 = File.OpenRead(filePath1)
         use stream2 = File.Open(filePath2, FileMode.Truncate) // Reset content of target file.
-        let readSeq1 = readInBlocks stream1 size
-        let writeSeq2 = writeInBlocks stream2
-        return! copyBlocks readSeq1 writeSeq2 Seq.empty
+        let readSeq1 = readInBlocksAsync stream1 size
+        let writeSeq2 = writeInBlocksAsync stream2
+        return! copyBlocksAsync readSeq1 writeSeq2 Seq.empty
     }

@@ -29,16 +29,25 @@ type public ResourceExtension = {
     Value: string
 }
 
-type public ResourceMetadata = {
-    Path: ResourcePath
-    Name: string
-    Extension: ResourceExtension
-    SizeInBytes: bigint
-    Type: ResourceType
-    Created: DateTime
-    Modified: DateTime
-    Accessed: DateTime
-    Attributes: FileAttributes
+[<Struct>]
+type public SuccessOperationResultType =
+    | DataWereSynchronized
+    | DataWereNewer
+
+type public SuccessOperationResult = {
+    SucceessType: SuccessOperationResultType
+    Message: string
+}
+
+[<Struct>]
+type public FailedOperationResultType =
+    | FailedToGetSourceMetadata
+    | FailedToGetTargetMetadata
+    | FailedToWriteDataToTarget
+
+type public FailedOperationResult = {
+    FailedType: FailedOperationResultType
+    Message: string
 }
 
 let private unknownResourceTypes = [ "*.*" ]
@@ -84,22 +93,9 @@ let public getResourceTypeByExtension (extension: ResourceExtension) =
         | None -> UnknownType
         | Some resourceType -> resourceType
 
-let public tryGetMetadataFromLocalFile (path: ResourcePath) =
-    match (File.Exists path.Value) with
-        | false -> Error $"File {path.Value} was not found."
-        | true ->
-            let fileInfo = FileInfo(path.Value)
-            let (path: ResourcePath) = { Value = fileInfo.FullName }
-            let (extension: ResourceExtension) = { Value = fileInfo.Extension }
-            let result = {
-                Path = path
-                Name = fileInfo.Name
-                Extension = extension
-                SizeInBytes = bigint fileInfo.Length
-                Type = getResourceTypeByExtension extension
-                Created = fileInfo.CreationTimeUtc
-                Modified =  fileInfo.LastWriteTimeUtc
-                Accessed = fileInfo.LastAccessTimeUtc
-                Attributes = fileInfo.Attributes
-            }
-            Ok result
+let public wrapErrorToOperationResult failedType error =
+    let failedOperationResult = {
+        FailedType = failedType
+        Message = error
+    }
+    failedOperationResult

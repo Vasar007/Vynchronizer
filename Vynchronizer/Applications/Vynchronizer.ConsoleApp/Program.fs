@@ -16,7 +16,7 @@ let private sampleOfComparing =
         let size = 1000
         printfn $"Comparing two files {file1} and {file2} with size blocks {size.ToString()}"
 
-        let! comareResult = compareFiles file1 file2 size
+        let! comareResult = compareFilesAsync file1 file2 size
         printfn $"Comparison result: {comareResult.ToString()}"
 
         return 0
@@ -29,7 +29,7 @@ let private sampleOfCopying =
         let size = 1000
         printfn $"Copying data between two files {file1} and {file2} with size blocks {size.ToString()}"
 
-        let! comareResult = copyData file1 file2 size
+        let! comareResult = copyDataAsync file1 file2 size
         printfn $"Comparison result: {comareResult.ToSingleString()}"
 
         return 0
@@ -45,15 +45,16 @@ let private sampleOfOperator =
     let (targetSpec: TargetSpec) = {
         StorageType = ResourceStorage.LocalFileSystem
         Path = { Value = "2.txt" }
+        ConflictResolution = ReplaceIfNewer
     }
 
     printfn "Executing operation for source and target."
 
     async {
-        let! operationResult = processSpecs sourceSpec targetSpec
+        let! operationResult = processSpecsAsync sourceSpec targetSpec
         match operationResult with
-            | Ok result -> printfn $"Operation result: {result.Success.ToString()}, message: {result.Message}"
-            | Error error -> printfn $"Error: {error}"
+            | Ok success -> printfn $"Success operation: {success.SucceessType.ToString()}, message: {success.Message}"
+            | Error failed -> printfn $"Failed operation: {failed.FailedType.ToString()}, message: {failed.Message}"
 
         return 0
     }
