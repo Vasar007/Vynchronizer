@@ -1,5 +1,6 @@
 ﻿module Vynchronizer.Core.Result
 
+
 let bindAsync fAsync result =
     async { 
         match result with

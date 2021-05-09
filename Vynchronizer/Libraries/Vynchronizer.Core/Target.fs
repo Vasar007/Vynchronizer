@@ -1,12 +1,12 @@
 ﻿module Vynchronizer.Core.Target
 
-
 open System.IO
 open Vynchronizer.Core.Metadata
 open Vynchronizer.Core.Source
 open Vynchronizer.Core.Resource
 open Vynchronizer.Core.Utils
 open Vynchronizer.Core.Local.AsyncFileReader
+
 
 [<Struct>]
 type public ConflictResolutionPolicy =

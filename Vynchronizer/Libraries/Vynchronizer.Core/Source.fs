@@ -1,11 +1,11 @@
 ﻿module Vynchronizer.Core.Source
 
-
 open System.IO
 open Vynchronizer.Core.Metadata
 open Vynchronizer.Core.Resource
 open Vynchronizer.Core.Utils
 open Vynchronizer.Core.Local.AsyncFileReader
+
 
 type public SourceSpec = {
     StorageType: ResourceStorage

@@ -4,6 +4,7 @@ open System
 open System.IO
 open Vynchronizer.Core.Resource
 
+
 type public ResourceMetadata = {
     Path: ResourcePath
     Name: string

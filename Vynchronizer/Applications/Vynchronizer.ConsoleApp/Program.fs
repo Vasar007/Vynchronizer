@@ -1,6 +1,5 @@
 ﻿module Vynchronizer.ConsoleApp.Program
 
-
 open System
 open Acolyte.Collections
 open Vynchronizer.Core.Local.AsyncFileReader
@@ -8,6 +7,7 @@ open Vynchronizer.Core.Resource
 open Vynchronizer.Core.Source
 open Vynchronizer.Core.Target
 open Vynchronizer.Core.Operator
+
 
 let private sampleOfComparing =
     async {

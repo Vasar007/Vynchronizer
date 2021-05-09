@@ -1,5 +1,6 @@
 ﻿module Vynchronizer.Core.Option
 
+
 let bindAsync fAsync option =
     async { 
         match option with

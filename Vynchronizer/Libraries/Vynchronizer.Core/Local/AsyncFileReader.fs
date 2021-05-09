@@ -1,8 +1,8 @@
 ﻿module Vynchronizer.Core.Local.AsyncFileReader
 
-
 open System
 open System.IO
+
 
 /// <summary>
 /// Represents a sequence of values 'TData where items are generated asynchronously on-demand.

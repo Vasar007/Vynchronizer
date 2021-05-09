@@ -1,8 +1,7 @@
 ﻿module Vynchronizer.Core.Resource
 
-
 open System
-open System.IO
+
 
 [<Struct>]
 type public ResourceType =
