@@ -1,3 +1,6 @@
+environment:
+  dotnetFormatVersion: 5.0.211103
+
 version: '{build}'
 image: Visual Studio 2019
 
@@ -6,10 +9,7 @@ skip_tags: true
 
 shallow_clone: true
 
-branches:
-  only:
-    - master
-    - develop
+# All branches are built by default.
 
 platform:
   - x64
@@ -22,7 +22,7 @@ matrix:
   fast_finish: true
 
 install:
-  - ps: dotnet tool update -g dotnet-format
+  - ps: dotnet tool update -g dotnet-format --version $env:dotnetFormatVersion
 
 before_build:
   - ps: cd Vynchronizer
@@ -36,9 +36,8 @@ test:
     - '**/*.Tests.dll'
 
 after_test:
-  # F# tests does not execute at all.
   # Check code style.
-  - ps: dotnet format "Vynchronizer.sln" --fix-whitespace --fix-style warn --check
+  - ps: dotnet format "Vynchronizer.sln" --fix-whitespace --fix-style warn --check --verbosity diagnostic
 
 pull_requests:
     do_not_increment_build_number: true

@@ -1,6 +1,19 @@
 <Project>
+
+  <!-- Project properties -->
+  <PropertyGroup>
+    <AppPlatforms>x64</AppPlatforms>
+    <AppConfigurations>Debug;Release</AppConfigurations>
+    <AppTargetFramework>net5.0</AppTargetFramework>
+    <LibararyTargetFramework>netstandard2.1</LibararyTargetFramework>
+    <TestTargetFramework>net5.0</TestTargetFramework>
+    <FSharpLangVersion>5.0</FSharpLangVersion>
+  </PropertyGroup>
+
+  <!-- NuGet packages -->
   <PropertyGroup>
     <AcolyteNETPackageVersion>2.1.0</AcolyteNETPackageVersion>
+    <CommandLineParserFSharpPackageVersion>2.8.0</CommandLineParserFSharpPackageVersion>
     <CoverletCollectorPackageVersion>3.0.3</CoverletCollectorPackageVersion>
     <IndexRangePackageVersion>1.0.0</IndexRangePackageVersion>
     <IsExternalInitPackageVersion>1.0.0</IsExternalInitPackageVersion>
@@ -13,4 +26,5 @@
     <XunitPackageVersion>2.4.1</XunitPackageVersion>
     <XunitRunnerVisualStudioPackageVersion>2.4.3</XunitRunnerVisualStudioPackageVersion>
   </PropertyGroup>
+
 </Project>

@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Platforms>x64</Platforms>
-    <Configurations>Debug;Release</Configurations>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <Platforms>$(AppPlatforms)</Platforms>
+    <Configurations>$(AppConfigurations)</Configurations>
+    <TargetFramework>$(LibararyTargetFramework)</TargetFramework>
     <OutputType>Library</OutputType>
-    <LangVersion>5.0</LangVersion>
+    <LangVersion>$(FSharpLangVersion)</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RootNamespace>Vynchronizer.Core</RootNamespace>

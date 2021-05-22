@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Platforms>x64</Platforms>
-    <Configurations>Debug;Release</Configurations>
-    <TargetFramework>net5.0</TargetFramework>
+    <Platforms>$(AppPlatforms)</Platforms>
+    <Configurations>$(AppConfigurations)</Configurations>
+    <TargetFramework>$(AppTargetFramework)</TargetFramework>
     <OutputType>Exe</OutputType>
-    <LangVersion>5.0</LangVersion>
+    <LangVersion>$(FSharpLangVersion)</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RootNamespace>Vynchronizer.ConsoleApp</RootNamespace>
@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="CommandLineArgs.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -27,11 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Vynchronizer.Core\Vynchronizer.Core.fsproj" />
+    <PackageReference Include="CommandLineParser.FSharp" Version="$(CommandLineParserFSharpPackageVersion)" />
+    <PackageReference Update="FSharp.Core" Version="$(FSharpCorePackageVersion)" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="$(FSharpCorePackageVersion)" />
+    <ProjectReference Include="$(SolutionDir)Libraries\Vynchronizer.Core\Vynchronizer.Core.fsproj" />
   </ItemGroup>
 
 </Project>
