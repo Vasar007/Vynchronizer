@@ -1,74 +1,62 @@
 ﻿module Vynchronizer.ConsoleApp.Program
 
 open System
+open System.Reflection
+open System.Text
 open Acolyte.Collections
-open Vynchronizer.Core.Local.AsyncFileReader
-open Vynchronizer.Core.Resource
-open Vynchronizer.Core.Source
-open Vynchronizer.Core.Target
-open Vynchronizer.Core.Operator
+open CommandLine
+open Vynchronizer.ConsoleApp
+open Vynchronizer.ConsoleApp.Options.RuleOptions
+open Vynchronizer.ConsoleApp.Options.TestOptions
+open Vynchronizer.ConsoleApp.Executors.RunExecutor
+open Vynchronizer.ConsoleApp.Executors.TestExecutor
 
 
-let private sampleOfComparing =
-    async {
-        let file1 = "1.txt"
-        let file2 = "2.txt"
-        let size = 1000
-        printfn $"Comparing two files {file1} and {file2} with size blocks {size.ToString()}"
+/// <summary>
+/// Loads all types with <see cref="VerbAttribute" /> from current assembly using Reflection.
+/// </summary>
+let private loadVerbs =
+    let executingAssembly = Assembly.GetExecutingAssembly()
+    let types = executingAssembly.GetTypes()
+    types
+        |> Array.filter (fun loadedType -> loadedType.GetCustomAttribute<VerbAttribute>() <> null)
 
-        let! comareResult = compareFilesAsync file1 file2 size
-        printfn $"Comparison result: {comareResult.ToString()}"
+let isImportantError (error: Error) =
+    error.Tag <> ErrorType.HelpRequestedError &&
+    error.Tag <> ErrorType.VersionRequestedError
 
-        return 0
-    }
+let getErrorString (error: Error) =
+    $"Encountered error with Tag '{error.Tag.ToString()}', StopsProcessing '{error.StopsProcessing.ToString()}'."
 
-let private sampleOfCopying =
-    async {
-        let file1 = "1.txt"
-        let file2 = "2.txt"
-        let size = 1000
-        printfn $"Copying data between two files {file1} and {file2} with size blocks {size.ToString()}"
+let constructMessage (errors: seq<Error>) =
+    let errorStrings =
+        errors
+            |> Seq.map getErrorString
+    let builder = new StringBuilder()
+    builder.AppendJoin(Environment.NewLine, errorStrings).ToString()
 
-        let! comareResult = copyDataAsync file1 file2 size
-        printfn $"Comparison result: {comareResult.ToSingleString()}"
+let onNotParsed (errors: seq<Error>) =
+    let filteredErrors =
+        errors
+            |> Seq.filter isImportantError
+            |> constructMessage
 
-        return 0
-    }
-
-let private sampleOfOperator =
-    let (sourceSpec: SourceSpec) = {
-        StorageType = ResourceStorage.LocalFileSystem
-        Path = { Value = "1.txt" }
-        BlockSize = 1000
-    }
-
-    let (targetSpec: TargetSpec) = {
-        StorageType = ResourceStorage.LocalFileSystem
-        Path = { Value = "2.txt" }
-        ConflictResolution = ReplaceIfNewer
-    }
-
-    printfn "Executing operation for source and target."
-
-    async {
-        let! operationResult = processSpecsAsync sourceSpec targetSpec
-        match operationResult with
-            | Ok success -> printfn $"Success operation: {success.SucceessType.ToString()}, message: {success.Message}"
-            | Error failed -> printfn $"Failed operation: {failed.FailedType.ToString()}, message: {failed.Message}"
-
-        return 0
-    }
-
+    let message = filteredErrors.ToSingleString()
+    failwith message
 
 let private asyncMain (args: string[]) =
     async {
-        let option = 2
+        let verbs = loadVerbs
+        let result = Parser.Default.ParseArguments(args, verbs)
 
-        match option with
-            | 0 -> return! sampleOfComparing
-            | 1 -> return! sampleOfCopying
-            | 2 -> return! sampleOfOperator
-            | _ -> return 0
+        match result with
+            | :? CommandLine.Parsed<obj> as command ->
+                match command.Value with
+                    | :? ExecuteRuleOptions as options -> return! executeRunCommandAsync options
+                    | :? TestCaseOptions as options -> return! executeTestCommandAsync options
+                    | _ -> return invalidArg (nameof args) ($"Test case is out of range: \"{args.ToSingleString()}\".")
+            | :? CommandLine.NotParsed<obj> as notParsed -> return onNotParsed notParsed.Errors
+            | _ -> return invalidArg (nameof args) ($"Test case is out of range: \"{args.ToSingleString()}\".")
     }
 
 [<EntryPoint>]
@@ -77,11 +65,11 @@ let private main args =
         try
             printfn "Vynchronizer started."
     
-            asyncMain args |> Async.RunSynchronously // return an integer exit code.
+            asyncMain args |> Async.RunSynchronously
         with
             | ex ->
                 printfn $"Exception occurred: {ex}"
-                1 // return an integer exit code.
+                ExitCodes.failExitCode
     finally
         printfn "Vynchronizer stopped."
         printfn "Press any key to close this window..."

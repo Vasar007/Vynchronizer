@@ -14,7 +14,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="CommandLineArgs.fs" />
+    <Compile Include="ExitCodes.fs" />
+    <Compile Include="Options\RuleOptions.fs" />
+    <Compile Include="Options\TestOptions.fs" />
+    <Compile Include="Executors\RunExecutor.fs" />
+    <Compile Include="Executors\TestExecutor.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

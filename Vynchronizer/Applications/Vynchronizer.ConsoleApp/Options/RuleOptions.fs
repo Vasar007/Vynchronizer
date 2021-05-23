@@ -1,4 +1,4 @@
-﻿module Vynchronizer.ConsoleApp.CommandLineArgs
+﻿module Vynchronizer.ConsoleApp.Options.RuleOptions
 
 open CommandLine
 open Vynchronizer.Core.Resource
