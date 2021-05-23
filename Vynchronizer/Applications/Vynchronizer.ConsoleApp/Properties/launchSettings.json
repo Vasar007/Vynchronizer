@@ -1,0 +1,20 @@
+{
+  "profiles": {
+    "Vynchronizer.ConsoleApp.TestCommand_1": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    },
+    "Vynchronizer.ConsoleApp.TestCommand_2": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    },
+    "Vynchronizer.ConsoleApp.TestCommand_3": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    },
+    "Vynchronizer.ConsoleApp.ExecuteCommand": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    }
+  }
+}

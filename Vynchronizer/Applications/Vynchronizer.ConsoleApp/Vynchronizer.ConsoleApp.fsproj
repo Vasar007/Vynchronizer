@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Properties\launchSettings.json" />
     <Compile Include="ExitCodes.fs" />
     <Compile Include="Options\RuleOptions.fs" />
     <Compile Include="Options\TestOptions.fs" />
