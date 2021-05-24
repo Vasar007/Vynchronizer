@@ -25,6 +25,9 @@ matrix:
 install:
   - ps: dotnet tool update -g dotnet-format --version $env:dotnetFormatVersion
 
+before_build:
+  - ps: dotnet restore Vynchronizer
+
 build:
   verbosity: minimal
 
@@ -34,7 +37,7 @@ test:
 
 after_test:
   # Check code style.
-  - ps: dotnet format "ProjectV/Vynchronizer.sln" --fix-whitespace --fix-style warn --check --verbosity diagnostic
+  - ps: dotnet format "Vynchronizer/Vynchronizer.sln" --fix-whitespace --fix-style warn --check --verbosity diagnostic
 
 pull_requests:
     do_not_increment_build_number: true
