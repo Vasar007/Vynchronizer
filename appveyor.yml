@@ -11,6 +11,7 @@ shallow_clone: true
 
 # All branches are built by default.
 
+# Build platform, i.e. x86, x64, Any CPU. This setting is optional.
 platform:
   - x64
 
@@ -24,10 +25,6 @@ matrix:
 install:
   - ps: dotnet tool update -g dotnet-format --version $env:dotnetFormatVersion
 
-before_build:
-  - ps: cd Vynchronizer
-  - ps: dotnet restore
-
 build:
   verbosity: minimal
 
@@ -37,7 +34,7 @@ test:
 
 after_test:
   # Check code style.
-  - ps: dotnet format "Vynchronizer.sln" --fix-whitespace --fix-style warn --check --verbosity diagnostic
+  - ps: dotnet format "ProjectV/Vynchronizer.sln" --fix-whitespace --fix-style warn --check --verbosity diagnostic
 
 pull_requests:
     do_not_increment_build_number: true

@@ -1,5 +1,8 @@
 ﻿module Vynchronizer.ConsoleApp.ExitCodes
 
+
+// TODO: replace with version from Acolyte package.
+
 [<Struct>]
 type internal ExitCode =
     | Success
