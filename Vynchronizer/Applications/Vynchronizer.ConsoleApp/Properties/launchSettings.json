@@ -1,20 +1,20 @@
 {
   "profiles": {
-    "Vynchronizer.ConsoleApp.TestCommand_1": {
+    "Vynchronizer.ConsoleApp.TestCommand_Comparing": {
       "commandName": "Project",
-      "commandLineArgs": ""
+      "commandLineArgs": "test -c Comparing"
     },
-    "Vynchronizer.ConsoleApp.TestCommand_2": {
+    "Vynchronizer.ConsoleApp.TestCommand_Copying": {
       "commandName": "Project",
-      "commandLineArgs": ""
+      "commandLineArgs": "test -c Copying"
     },
-    "Vynchronizer.ConsoleApp.TestCommand_3": {
+    "Vynchronizer.ConsoleApp.TestCommand_Operator": {
       "commandName": "Project",
-      "commandLineArgs": ""
+      "commandLineArgs": "test -c Operator"
     },
     "Vynchronizer.ConsoleApp.ExecuteCommand": {
       "commandName": "Project",
-      "commandLineArgs": ""
+      "commandLineArgs": "execute --source-storage LocalFileSystem --source-path 1.txt --source-block-size 1000 --target-storage LocalFileSystem --target-path 2.txt --target-resolution ReplaceIfNewer"
     }
   }
 }

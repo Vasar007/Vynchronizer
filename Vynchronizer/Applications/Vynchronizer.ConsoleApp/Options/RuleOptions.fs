@@ -5,45 +5,44 @@ open Vynchronizer.Core.Resource
 open Vynchronizer.Core.Target
 
 
-type SourceRuleOptions = {
-    [<Option('s', "storage", Required = true, HelpText = "Source storage.")>]
-    StorageType: ResourceStorage
-
-    [<Option('p', "path", Required = true, HelpText = "Resource path on source storage.")>]
-    Path: string
-
-    [<Option('b', "blocksize", Required = false, Default = 1024, HelpText = "Block size. Synchronization will copy data from source to target by blocks.")>]
-    BlockSize: int
-}
+[<Struct>]
+type public ResourceStorageArg =
+    | UnknownStorage = 0
+    | LocalFileSystem = 1
+    | GoogleDrive = 2
 
 [<Struct>]
 type public ConflictResolutionPolicyArg =
     | ReplaceAll = 0
     | ReplaceIfNewer = 1
 
-type TargetRuleOptions = {
-    [<Option('s', "storage", Required = true, HelpText = "Target storage.")>]
-    StorageType: ResourceStorage
-
-    [<Option('p', "path", Required = true, HelpText = "Resource path on target storage.")>]
-    Path: string
-
-    [<Option('r', "resolution", Required = false, Default = ConflictResolutionPolicyArg.ReplaceAll, HelpText = "Policy to resolve conflicts during synchronization.")>]
-    ConflictResolution: ConflictResolutionPolicyArg
-}
-
-type RuleOptions = {
-    [<Option("source", Required = true, HelpText = "Synchronization source.")>]
-    Source: seq<string>
-
-    [<Option("target", Required = true, HelpText = "Synchronization target.")>]
-    Target: seq<string>
-}
-
 [<Verb("execute", HelpText = "Executes synchronization rule.")>]
 type ExecuteRuleOptions = {
-    Rule: RuleOptions
+    [<Option("source-storage", Required = true, HelpText = "Source storage.")>]
+    SourceStorageType: ResourceStorageArg
+
+    [<Option("source-path", Required = true, HelpText = "Resource path on source storage.")>]
+    SourcePath: string
+
+    [<Option('b', "source-block-size", Required = false, Default = 1024, HelpText = "Block size. Synchronization will copy data from source to target by blocks.")>]
+    SourceBlockSize: int
+
+    [<Option("target-storage", Required = true, HelpText = "Target storage.")>]
+    TargetStorageType: ResourceStorageArg
+
+    [<Option("target-path", Required = true, HelpText = "Resource path on target storage.")>]
+    TargetPath: string
+
+    [<Option("target-resolution", Required = false, Default = ConflictResolutionPolicyArg.ReplaceAll, HelpText = "Policy to resolve conflicts during synchronization.")>]
+    TargetConflictResolution: ConflictResolutionPolicyArg
 }
+
+let internal convertResourceStorage resourceStorage =
+    match resourceStorage with
+        | ResourceStorageArg.UnknownStorage -> ResourceStorage.UnknownStorage
+        | ResourceStorageArg.LocalFileSystem -> ResourceStorage.LocalFileSystem
+        | ResourceStorageArg.GoogleDrive -> ResourceStorage.GoogleDrive
+        | _ -> invalidArg (nameof resourceStorage) ($"Resource storage is out of range: \"{resourceStorage.ToString()}\".")
 
 let internal convertConflictResolutionPolicy conflictResolutionPolicy =
     match conflictResolutionPolicy with
