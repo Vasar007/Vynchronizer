@@ -2,7 +2,6 @@
 
 open System
 open System.Reflection
-open System.Text
 open Acolyte.Collections
 open CommandLine
 open Vynchronizer.ConsoleApp
@@ -22,8 +21,11 @@ let private loadVerbs =
         |> Array.filter (fun loadedType -> loadedType.GetCustomAttribute<VerbAttribute>() <> null)
 
 let isImportantError (error: Error) =
-    error.Tag <> ErrorType.HelpRequestedError &&
-    error.Tag <> ErrorType.VersionRequestedError
+    match error.Tag with
+        | ErrorType.HelpRequestedError -> false
+        | ErrorType.HelpVerbRequestedError -> false
+        | ErrorType.VersionRequestedError -> false
+        | _ -> true
 
 let getErrorString (error: Error) =
     $"Encountered error with Tag '{error.Tag.ToString()}', StopsProcessing '{error.StopsProcessing.ToString()}'."
@@ -32,17 +34,18 @@ let constructMessage (errors: seq<Error>) =
     let errorStrings =
         errors
             |> Seq.map getErrorString
-    let builder = new StringBuilder()
-    builder.AppendJoin(Environment.NewLine, errorStrings).ToString()
+    String.Join(Environment.NewLine, errorStrings)
 
 let onNotParsed (errors: seq<Error>) =
-    let filteredErrors =
+    let message =
         errors
             |> Seq.filter isImportantError
             |> constructMessage
 
-    let message = filteredErrors.ToSingleString()
-    failwith message
+    if not (String.IsNullOrEmpty(message)) then
+        failwith message
+
+    ExitCodes.successExitCode
 
 let private asyncMain (args: string[]) =
     async {

@@ -17,7 +17,7 @@ type internal TestCase =
 
 [<Verb("test", HelpText = "Executes test case.")>]
 type TestCaseOptions = {
-    [<Option('c', "case", Required = true, HelpText = "Test case to execute.")>]
+    [<Option('c', "case", Required = true, HelpText = "Test case to execute. Valid values: Comparing (0), Copying (1), Operator (2).")>]
     Case: TestCaseArg
 }
 

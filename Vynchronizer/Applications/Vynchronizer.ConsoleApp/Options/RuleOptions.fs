@@ -24,7 +24,7 @@ type ExecuteRuleOptions = {
     [<Option("source-path", Required = true, HelpText = "Resource path on source storage.")>]
     SourcePath: string
 
-    [<Option('b', "source-block-size", Required = false, Default = 1024, HelpText = "Block size. Synchronization will copy data from source to target by blocks.")>]
+    [<Option("source-block-size", Required = false, Default = 1024, HelpText = "Block size. Synchronization will copy data from source to target by blocks. Valid values: LocalFileSystem (1), GoogleDrive (2).")>]
     SourceBlockSize: int
 
     [<Option("target-storage", Required = true, HelpText = "Target storage.")>]
@@ -33,7 +33,7 @@ type ExecuteRuleOptions = {
     [<Option("target-path", Required = true, HelpText = "Resource path on target storage.")>]
     TargetPath: string
 
-    [<Option("target-resolution", Required = false, Default = ConflictResolutionPolicyArg.ReplaceAll, HelpText = "Policy to resolve conflicts during synchronization.")>]
+    [<Option("target-resolution", Required = false, Default = ConflictResolutionPolicyArg.ReplaceAll, HelpText = "Policy to resolve conflicts during synchronization. Valid values: ReplaceAll (0), ReplaceIfNewer (1).")>]
     TargetConflictResolution: ConflictResolutionPolicyArg
 }
 
