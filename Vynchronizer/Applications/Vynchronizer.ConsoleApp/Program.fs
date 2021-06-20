@@ -56,6 +56,7 @@ let private asyncMain (args: string[]) =
             | :? CommandLine.Parsed<obj> as command ->
                 match command.Value with
                     | :? ExecuteRuleOptions as options -> return! executeRunCommandAsync options
+                    | :? AddRuleOptions as options -> return! executeAddRuleCommandAsync options
                     | :? TestCaseOptions as options -> return! executeTestCommandAsync options
                     | _ -> return invalidArg (nameof args) ($"Test case is out of range: \"{args.ToSingleString()}\".")
             | :? CommandLine.NotParsed<obj> as notParsed -> return onNotParsed notParsed.Errors

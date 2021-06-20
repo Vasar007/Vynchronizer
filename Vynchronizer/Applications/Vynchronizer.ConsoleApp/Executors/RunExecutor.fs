@@ -1,5 +1,6 @@
 ﻿module Vynchronizer.ConsoleApp.Executors.RunExecutor
 
+open System
 open Vynchronizer.ConsoleApp
 open Vynchronizer.ConsoleApp.Options.RuleOptions
 open Vynchronizer.Core.Resource
@@ -20,6 +21,7 @@ let private executeForSpecsAsync sourceSpec targetSpec =
         return ExitCodes.successExitCode
     }
 
+
 let internal executeRunCommandAsync (runOptions: ExecuteRuleOptions) =
     let sourceStorageType = convertResourceStorage runOptions.SourceStorageType
     let targetStorageType = convertResourceStorage runOptions.TargetStorageType
@@ -38,3 +40,6 @@ let internal executeRunCommandAsync (runOptions: ExecuteRuleOptions) =
     }
 
     executeForSpecsAsync sourceSpec targetSpec
+
+let internal executeAddRuleCommandAsync (runOptions: AddRuleOptions) =
+    raise (new NotImplementedException())
