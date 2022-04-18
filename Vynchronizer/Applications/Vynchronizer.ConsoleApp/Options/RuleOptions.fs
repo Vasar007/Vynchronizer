@@ -6,18 +6,18 @@ open Vynchronizer.Core.Target
 
 
 [<Struct>]
-type internal ResourceStorageArg =
+type public ResourceStorageArg =
     | UnknownStorage = 0
     | LocalFileSystem = 1
     | GoogleDrive = 2
 
 [<Struct>]
-type internal ConflictResolutionPolicyArg =
+type public ConflictResolutionPolicyArg =
     | ReplaceAll = 0
     | ReplaceIfNewer = 1
 
 [<Struct>]
-type internal ScheduleTypeArg =
+type public ScheduleTypeArg =
     | Second = 0
     | Minute = 1
     | Hour = 2
@@ -40,7 +40,7 @@ type internal ScheduleType =
 let private scheduleNumberGroup = "ScheduleNumberGroup"
 
 [<Verb("execute", HelpText = "Executes synchronization rule.")>]
-type internal ExecuteRuleOptions = {
+type public ExecuteRuleOptions = {
     [<Option("source-storage", Required = true, HelpText = "Source storage.")>]
     SourceStorageType: ResourceStorageArg
 
@@ -60,8 +60,8 @@ type internal ExecuteRuleOptions = {
     TargetConflictResolution: ConflictResolutionPolicyArg
 }
 
-[<Verb("execute", HelpText = "Adds synchronization rule and schedules processing.")>]
-type internal AddRuleOptions = {
+[<Verb("add", HelpText = "Adds synchronization rule and schedules processing.")>]
+type public AddRuleOptions = {
     [<Option("source-storage", Required = true, HelpText = "Source storage.")>]
     SourceStorageType: ResourceStorageArg
 

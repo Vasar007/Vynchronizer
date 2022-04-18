@@ -4,7 +4,7 @@ open CommandLine
 
 
 [<Struct>]
-type internal TestCaseArg =
+type public TestCaseArg =
     | Comparing = 0
     | Copying = 1
     | Operator = 2
@@ -16,7 +16,7 @@ type internal TestCase =
     | Operator
 
 [<Verb("test", HelpText = "Executes test case.")>]
-type internal TestCaseOptions = {
+type public TestCaseOptions = {
     [<Option('c', "case", Required = true, HelpText = "Test case to execute. Valid values: Comparing (0), Copying (1), Operator (2).")>]
     Case: TestCaseArg
 }
