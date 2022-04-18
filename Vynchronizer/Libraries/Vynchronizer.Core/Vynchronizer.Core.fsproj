@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Platforms>$(AppPlatforms)</Platforms>
     <Configurations>$(AppConfigurations)</Configurations>
-    <TargetFramework>$(LibararyTargetFramework)</TargetFramework>
+    <TargetFrameworks>$(LibararyTargetFrameworks)</TargetFrameworks>
     <OutputType>Library</OutputType>
     <LangVersion>$(FSharpLangVersion)</LangVersion>
     <Nullable>enable</Nullable>
@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Acolyte.NET" Version="$(AcolyteNETPackageVersion)" />
-    <PackageReference Update="FSharp.Core" Version="$(FSharpCorePackageVersion)" />
+    <PackageReference Include="Acolyte.NET" />
+    <PackageReference Include="FSharp.Core" />
   </ItemGroup>
 
 </Project>

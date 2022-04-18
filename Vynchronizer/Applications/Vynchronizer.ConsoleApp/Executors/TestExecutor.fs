@@ -1,6 +1,6 @@
 ﻿module Vynchronizer.ConsoleApp.Executors.TestExecutor
 
-open Acolyte.Collections
+open Acolyte.Linq
 open Vynchronizer.ConsoleApp
 open Vynchronizer.ConsoleApp.Options.TestOptions
 open Vynchronizer.Core.Local.AsyncFileReader

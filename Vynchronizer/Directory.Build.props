@@ -4,27 +4,11 @@
   <PropertyGroup>
     <AppPlatforms>x64</AppPlatforms>
     <AppConfigurations>Debug;Release</AppConfigurations>
-    <AppTargetFramework>net5.0</AppTargetFramework>
-    <LibararyTargetFramework>netstandard2.1</LibararyTargetFramework>
-    <TestTargetFramework>net5.0</TestTargetFramework>
+    <AppTargetFramework>net6.0</AppTargetFramework>
+    <LibararyTargetFrameworks>net6.0</LibararyTargetFrameworks>
+    <TestTargetFrameworks>net6.0</TestTargetFrameworks>
     <FSharpLangVersion>5.0</FSharpLangVersion>
-  </PropertyGroup>
-
-  <!-- NuGet packages -->
-  <PropertyGroup>
-    <AcolyteNETPackageVersion>2.1.0</AcolyteNETPackageVersion>
-    <CommandLineParserFSharpPackageVersion>2.8.0</CommandLineParserFSharpPackageVersion>
-    <CoverletCollectorPackageVersion>3.0.3</CoverletCollectorPackageVersion>
-    <IndexRangePackageVersion>1.0.0</IndexRangePackageVersion>
-    <IsExternalInitPackageVersion>1.0.0</IsExternalInitPackageVersion>
-    <FSharpCorePackageVersion>5.0.1</FSharpCorePackageVersion>
-    <MicrosoftBclHashCodePackageVersion>1.1.1</MicrosoftBclHashCodePackageVersion>
-    <MicrosoftNETTestSdkPackageVersion>16.9.4</MicrosoftNETTestSdkPackageVersion>
-    <MoqPackageVersion>4.16.1</MoqPackageVersion>
-    <SystemLinqAsyncPackageVersion>5.0.0</SystemLinqAsyncPackageVersion>
-    <UnquotePackageVersion>5.0.0</UnquotePackageVersion>
-    <XunitPackageVersion>2.4.1</XunitPackageVersion>
-    <XunitRunnerVisualStudioPackageVersion>2.4.3</XunitRunnerVisualStudioPackageVersion>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
 
 </Project>

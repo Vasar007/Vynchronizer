@@ -2,7 +2,7 @@
 
 open System
 open System.Reflection
-open Acolyte.Collections
+open Acolyte.Linq
 open CommandLine
 open Vynchronizer.ConsoleApp
 open Vynchronizer.ConsoleApp.Options.RuleOptions
